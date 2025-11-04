@@ -12,7 +12,6 @@ REST API с аутентификацией на основе JWT, разрабо
 - JWT (JSON Web Tokens)
 - Maven
 - Docker & Docker Compose
-- Lombok
 
 ## Функциональность
 
@@ -158,51 +157,6 @@ curl -X GET http://localhost:8080/api/users \
   -H "Authorization: Bearer YOUR_JWT_TOKEN"
 ```
 
-## Структура проекта
-
-```
-security-web/
-├── src/
-│   └── main/
-│       ├── java/
-│       │   └── org/
-│       │       └── example/
-│       │           ├── Main.java                      # Точка входа
-│       │           ├── config/                        # Конфигурация
-│       │           │   ├── SecurityConfig.java        # Spring Security
-│       │           │   ├── JwtAuthenticationFilter.java
-│       │           │   └── DataInitializer.java       # Инициализация данных
-│       │           ├── controller/                    # REST контроллеры
-│       │           │   ├── AuthController.java
-│       │           │   └── DataController.java
-│       │           ├── dto/                           # Data Transfer Objects
-│       │           │   ├── LoginRequest.java
-│       │           │   ├── LoginResponse.java
-│       │           │   ├── RegisterRequest.java
-│       │           │   ├── PostResponse.java
-│       │           │   ├── CreatePostRequest.java
-│       │           │   ├── UserResponse.java
-│       │           │   └── ErrorResponse.java
-│       │           ├── entity/                        # JPA сущности
-│       │           │   ├── User.java
-│       │           │   └── Post.java
-│       │           ├── exception/                     # Обработка ошибок
-│       │           │   └── GlobalExceptionHandler.java
-│       │           ├── repository/                    # JPA репозитории
-│       │           │   ├── UserRepository.java
-│       │           │   └── PostRepository.java
-│       │           └── service/                       # Бизнес-логика
-│       │               ├── AuthService.java
-│       │               ├── JwtService.java
-│       │               ├── UserService.java
-│       │               └── PostService.java
-│       └── resources/
-│           └── application.properties                 # Конфигурация приложения
-├── docker-compose.yml                                 # Docker Compose для PostgreSQL
-├── pom.xml                                            # Maven конфигурация
-└── README.md                                          # Документация
-```
-
 ## Безопасность
 
 - Пароли хранятся в зашифрованном виде с использованием BCrypt
@@ -231,14 +185,4 @@ docker-compose down -v
 - Логи приложения доступны в консоли
 - SQL запросы выводятся в лог для отладки (можно отключить в application.properties)
 - JWT секретный ключ и срок действия токена настраиваются в application.properties
-
-## Возможные улучшения
-
-- Добавить пагинацию для списков
-- Добавить фильтрацию и поиск
-- Добавить возможность обновления и удаления постов
-- Добавить роли и права доступа
-- Добавить refresh token
-- Добавить Swagger/OpenAPI документацию
-- Добавить unit и integration тесты
 

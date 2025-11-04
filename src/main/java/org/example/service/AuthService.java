@@ -1,24 +1,32 @@
 package org.example.service;
 
-import lombok.RequiredArgsConstructor;
 import org.example.dto.LoginRequest;
 import org.example.dto.LoginResponse;
 import org.example.dto.RegisterRequest;
 import org.example.entity.User;
 import org.example.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+
+    @Autowired
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, 
+                      JwtService jwtService, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+    }
 
     public LoginResponse login(LoginRequest request) {
         authenticationManager.authenticate(
@@ -33,13 +41,7 @@ public class AuthService {
 
         String jwtToken = jwtService.generateToken(user);
 
-        return LoginResponse.builder()
-                .token(jwtToken)
-                .type("Bearer")
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(user.getRole().name())
-                .build();
+        return new LoginResponse(jwtToken, user.getUsername(), user.getEmail(), user.getRole().name());
     }
 
     public LoginResponse register(RegisterRequest request) {
@@ -51,26 +53,19 @@ public class AuthService {
             throw new RuntimeException("Email already exists");
         }
 
-        User user = User.builder()
-                .username(request.getUsername())
-                .password(passwordEncoder.encode(request.getPassword()))
-                .email(request.getEmail())
-                .fullName(request.getFullName())
-                .role(User.Role.USER)
-                .isActive(true)
-                .build();
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setEmail(request.getEmail());
+        user.setFullName(request.getFullName());
+        user.setRole(User.Role.USER);
+        user.setIsActive(true);
 
         userRepository.save(user);
 
         String jwtToken = jwtService.generateToken(user);
 
-        return LoginResponse.builder()
-                .token(jwtToken)
-                .type("Bearer")
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(user.getRole().name())
-                .build();
+        return new LoginResponse(jwtToken, user.getUsername(), user.getEmail(), user.getRole().name());
     }
 }
 

@@ -1,11 +1,11 @@
 package org.example.service;
 
-import lombok.RequiredArgsConstructor;
 import org.example.dto.CreatePostRequest;
 import org.example.dto.PostResponse;
 import org.example.entity.Post;
 import org.example.entity.User;
 import org.example.repository.PostRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,11 +14,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class PostService {
 
     private final PostRepository postRepository;
     private final UserService userService;
+
+    @Autowired
+    public PostService(PostRepository postRepository, UserService userService) {
+        this.postRepository = postRepository;
+        this.userService = userService;
+    }
 
     @Transactional(readOnly = true)
     public List<PostResponse> getAllPosts() {
@@ -33,11 +38,10 @@ public class PostService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User author = userService.findByUsername(username);
 
-        Post post = Post.builder()
-                .title(request.getTitle())
-                .content(request.getContent())
-                .author(author)
-                .build();
+        Post post = new Post();
+        post.setTitle(request.getTitle());
+        post.setContent(request.getContent());
+        post.setAuthor(author);
 
         Post savedPost = postRepository.save(post);
         return mapToPostResponse(savedPost);
@@ -55,14 +59,14 @@ public class PostService {
     }
 
     private PostResponse mapToPostResponse(Post post) {
-        return PostResponse.builder()
-                .id(post.getId())
-                .title(post.getTitle())
-                .content(post.getContent())
-                .authorUsername(post.getAuthor().getUsername())
-                .createdAt(post.getCreatedAt())
-                .updatedAt(post.getUpdatedAt())
-                .build();
+        return new PostResponse(
+                post.getId(),
+                post.getTitle(),
+                post.getContent(),
+                post.getAuthor().getUsername(),
+                post.getCreatedAt(),
+                post.getUpdatedAt()
+        );
     }
 }
 

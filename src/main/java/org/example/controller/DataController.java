@@ -1,13 +1,13 @@
 package org.example.controller;
 
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import org.example.dto.CreatePostRequest;
 import org.example.dto.PostResponse;
 import org.example.dto.UserResponse;
 import org.example.entity.User;
 import org.example.repository.UserRepository;
 import org.example.service.PostService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -17,11 +17,16 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
-@RequiredArgsConstructor
 public class DataController {
 
     private final PostService postService;
     private final UserRepository userRepository;
+
+    @Autowired
+    public DataController(PostService postService, UserRepository userRepository) {
+        this.postService = postService;
+        this.userRepository = userRepository;
+    }
 
     /**
      * GET /api/data - получение списка всех постов
@@ -80,14 +85,14 @@ public class DataController {
     }
 
     private UserResponse mapToUserResponse(User user) {
-        return UserResponse.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .fullName(user.getFullName())
-                .role(user.getRole().name())
-                .createdAt(user.getCreatedAt())
-                .build();
+        return new UserResponse(
+                user.getId(),
+                user.getUsername(),
+                user.getEmail(),
+                user.getFullName(),
+                user.getRole().name(),
+                user.getCreatedAt()
+        );
     }
 }
 
