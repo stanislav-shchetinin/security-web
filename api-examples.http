@@ -1,0 +1,74 @@
+### Примеры запросов к API
+### Используйте IntelliJ IDEA HTTP Client или аналогичные инструменты
+
+### Переменные
+@baseUrl = http://localhost:8080
+@token = your_jwt_token_here
+
+### 1. Вход в систему (admin)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "admin123"
+}
+
+### 2. Вход в систему (user)
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "john",
+  "password": "password123"
+}
+
+### 3. Регистрация нового пользователя
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "password123",
+  "email": "testuser@example.com",
+  "fullName": "Test User"
+}
+
+### 4. Получение списка всех постов (требуется токен)
+GET {{baseUrl}}/api/data
+Authorization: Bearer {{token}}
+
+### 5. Создание нового поста (требуется токен)
+POST {{baseUrl}}/api/posts
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "Мой новый пост",
+  "content": "Это содержимое моего нового поста. Здесь может быть любой текст."
+}
+
+### 6. Получение моих постов (требуется токен)
+GET {{baseUrl}}/api/posts/my
+Authorization: Bearer {{token}}
+
+### 7. Получение списка пользователей (требуется токен)
+GET {{baseUrl}}/api/users
+Authorization: Bearer {{token}}
+
+### 8. Получение информации о текущем пользователе (требуется токен)
+GET {{baseUrl}}/api/me
+Authorization: Bearer {{token}}
+
+### 9. Попытка доступа без токена (должна вернуть 403)
+GET {{baseUrl}}/api/data
+
+### 10. Попытка входа с неверными данными
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "wrongpassword"
+}
+
