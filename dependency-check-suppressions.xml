@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<suppressions xmlns="https://jeremylong.github.io/DependencyCheck/dependency-suppression.1.3.xsd">
+    <!--
+    Файл для подавления ложных срабатываний OWASP Dependency-Check.
+
+    Пример подавления:
+    <suppress>
+        <notes><![CDATA[
+        Описание почему эта уязвимость подавлена
+        ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.example/.*$</packageUrl>
+        <cve>CVE-2021-12345</cve>
+    </suppress>
+    
+</suppressions>
+
