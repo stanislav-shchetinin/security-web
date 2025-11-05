@@ -79,9 +79,11 @@ mvn spring-boot:run
 
 При первом запуске автоматически создается тестовый пользователь:
 
-| Username    | Password    | Role  |
-|-------------|-------------|-------|
-| postgres    | admin123    | ADMIN |
+| Username    | Password       | Role  |
+|-------------|----------------|-------|
+| admin       | admin123       | ADMIN |
+| john        | password123    | USER  |
+| jane        | password123    | USER  |
 
 Также создаются несколько тестовых постов.
 
