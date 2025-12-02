@@ -81,7 +81,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
-        
+
+    - name: Export NVD API Key
+      run: echo "NVD_API_KEY=${{ secrets.NVD_API_KEY }}" >> $GITHUB_ENV
+
     - name: Run OWASP Dependency-Check
       run: mvn dependency-check:check
       continue-on-error: true
