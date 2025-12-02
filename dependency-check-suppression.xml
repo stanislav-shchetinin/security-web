@@ -11,6 +11,6 @@
         <packageUrl regex="true">^pkg:maven/org\.example/.*$</packageUrl>
         <cve>CVE-2021-12345</cve>
     </suppress>
-    
+    -->
 </suppressions>
 
