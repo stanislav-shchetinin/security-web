@@ -232,6 +232,11 @@
                     <ossIndexUsername>${env.OSSINDEX_USERNAME}</ossIndexUsername>
                     <ossIndexPassword>${env.OSSINDEX_TOKEN}</ossIndexPassword>
                     <nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
+                    <nvdMaxRetryCount>10</nvdMaxRetryCount>
+                    <nvdApiDelay>6000</nvdApiDelay>
+                    <nvdApiEndpoint>https://services.nvd.nist.gov/rest/json/cves/2.0</nvdApiEndpoint>
+                    <connectionTimeout>300000</connectionTimeout>
+                    <readTimeout>300000</readTimeout>
                 </configuration>
                 <executions>
                     <execution>
