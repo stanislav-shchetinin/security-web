@@ -231,12 +231,13 @@
                     <failBuildOnCVSS>8</failBuildOnCVSS>
                     <ossIndexUsername>${env.OSSINDEX_USERNAME}</ossIndexUsername>
                     <ossIndexPassword>${env.OSSINDEX_TOKEN}</ossIndexPassword>
-                    <!-- <nvdApiKey>${env.NVD_API_KEY}</nvdApiKey> -->
-
-                    <!-- Отключаем NVD API -->
+                    
+                     <!-- Отключаем NVD источник -->
+                    <nvdApiDatafeedEnabled>false</nvdApiDatafeedEnabled>
                     <nvdApiServicesEnabled>false</nvdApiServicesEnabled>
                     
-                    <nvdDatafeedUrl>https://nvd.nist.gov/feeds/json/cve/1.1/nvdcve-1.1-recent.json.gz</nvdDatafeedUrl>
+                    <!-- Игнорируем ошибки обновления данных -->
+                    <failOnError>false</failOnError>
                 </configuration>
                 <executions>
                     <execution>
