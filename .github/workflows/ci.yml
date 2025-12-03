@@ -81,6 +81,14 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+
+    - name: Cache dependency-check database
+      uses: actions/cache@v4
+      with:
+        path: ~/.m2/repository/org/owasp/dependency-check-data
+        key: ${{ runner.os }}-dependency-check-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-dependency-check-
         
     - name: Run OWASP Dependency-Check
       run: mvn dependency-check:check
