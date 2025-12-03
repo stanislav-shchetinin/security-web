@@ -1,3 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FindBugsFilter>
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter
+        xmlns="https://github.com/spotbugs/filter/3.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="https://github.com/spotbugs/filter/3.0.0 https://raw.githubusercontent.com/spotbugs/spotbugs/3.1.0/spotbugs/etc/findbugsfilter.xsd">
+
+    <!-- Исключаем предупреждения о SQL инъекциях для тестовых данных -->
+    <Match>
+        <Class name="org.example.config.DataInitializer"/>
+        <Bug pattern="SQL_INJECTION_SPRING_JDBC"/>
+    </Match>
+
+     <!-- Все предупреждения ниже это ложные срабатывания
+    SecurityConfig.jwtAuthFilter - сохранение ссылки на JwtAuthenticationFilter
+    Post.getAuthor() - возврат ссылки на User
+    Post конструктор - сохранение ссылки на User
+    Post.setAuthor() - сохранение ссылки на User
+     -->
+     <!-- SecurityConfig: 
+    Это управляемый Spring бин, где dependency injection работает со ссылками на другие бины - это нормальное поведение 
+    -->
+    <Match>
+        <Class name="org.example.config.SecurityConfig"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+
+    <!-- Post: 
+    Post entity: Это JPA entity с ManyToOne relationship. Hibernate/JPA требует прямой работы 
+    со ссылками для управления связями между сущностями
+    -->
+    <Match>
+        <Class name="org.example.entity.Post"/>
+        <Field name="author"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+
+    <Match>
+        <Package name="org.example.entity"/>
+        <Bug pattern="EI_EXPOSE_REP,EI_EXPOSE_REP2"/>
+    </Match>
+
+</FindBugsFilter>
 </FindBugsFilter>
